@@ -24,5 +24,5 @@ export default defineConfig({
             },
         },
     },
-    base: process.env.NODE_ENV === 'production' ? process.env.VITE_APP_URL + '/' : '/',
+    base: process.env.APP_ENV === 'production' ? process.env.VITE_APP_URL + '/' : '/',
 });
