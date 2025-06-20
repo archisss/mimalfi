@@ -11,6 +11,11 @@ use App\Livewire\Admin\Users\CreateUser;
 use App\Livewire\Admin\Users\EditUser;
 use App\Livewire\Admin\Users\UserCreateList;
 use App\Livewire\Admin\Collect\CollectList;
+use Illuminate\Support\Facades\URL;
+
+if (env('APP_ENV') === 'production') {
+    URL::forceSchema('https');
+}
 
 Route::get('/', function () {
     return view('welcome');
