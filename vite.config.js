@@ -20,5 +20,6 @@ export default defineConfig({
             },
         },
     },
-    base: process.env.APP_ENV === 'production' ? process.env.VITE_APP_URL + '/' : '/',
+    // Usa VITE_NODE_ENV para verificar si estamos en producción
+    base: process.env.VITE_NODE_ENV === 'production' ? process.env.VITE_APP_URL + '/' : '/',
 });
