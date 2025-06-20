@@ -2,6 +2,10 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
 
+// Obtén la URL de producción del archivo .env
+const isProduction = process.env.NODE_ENV === 'production';
+const baseURL = isProduction ? process.env.VITE_APP_URL : '/';
+
 export default defineConfig({
     plugins: [
         laravel({
@@ -20,6 +24,5 @@ export default defineConfig({
             },
         },
     },
-    // Usa VITE_NODE_ENV para verificar si estamos en producción
-    base: process.env.VITE_NODE_ENV === 'production' ? process.env.VITE_APP_URL + '/' : '/',
+    base: baseURL, // Cambiado para que base use la URL adecuada
 });
