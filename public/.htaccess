@@ -5,12 +5,16 @@
 
     RewriteEngine On
 
+    # Redirigir todo el tráfico HTTP a HTTPS
+    RewriteCond %{HTTPS} off
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
     # Handle X-XSRF-Token Header
-    RewriteCond %{HTTP:x-xsrf-token} .
+    RewriteCond %{HTTP:x-xsrf-token} . 
     RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
 
     # Redirect Trailing Slashes If Not A Folder...
