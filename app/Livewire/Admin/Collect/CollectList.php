@@ -50,7 +50,7 @@ class CollectList extends Component
     }
 
     $this->loans = $query
-        ->orderBy('payment_type')
+        ->orderBy('payment_time')
         ->get()
         ->map(function($loan) {
             $totalAbonado = $loan->payments->sum('amount') ?? 1;
@@ -64,27 +64,6 @@ class CollectList extends Component
             $loan->deuda_al_dia = $deudaAlDia;
             return $loan;
         });
-        // $this->loans = Loan::with('user')->where('status', '!=', 'finalizado')
-        //     ->where(function ($query) {
-        //         $query->where('payment_date', $this->dayName)
-        //               ->orWhere('payment_reschedule_for', $this->dayName);
-        //     })      
-        //     ->orderBy('payment_type')
-        //     ->get()
-        //     ->map(function ($loan) {
-        //     $totalAbonado = $loan->payments->sum('amount') ?? 1;
-        //     $pagosTotales = $loan->loanType->payments_total ?? 1;
-        //     $pagoMensual = $loan->total_to_pay / $pagosTotales;
-        //     $pagosRealizados = floor($totalAbonado / $pagoMensual);
-        //     $deudaAlDia = $loan->total_to_pay - ($pagosRealizados * $pagoMensual);
-
-        //     $loan->pagos_realizados = $pagosRealizados;
-        //     $loan->pago_mensual = $pagoMensual;
-        //     $loan->deuda_al_dia = $deudaAlDia;
-
-        //     return $loan;
-            
-        // });
     }
 
     public function openRescheduleModal($loanId)
@@ -92,7 +71,7 @@ class CollectList extends Component
         $this->selectedLoanId = $loanId;
         $loan = Loan::find($loanId);
         $this->newPaymentDay = $loan->payment_reschedule_for ?? $loan->payment_date;
-        $this->newPaymentTime = $loan->payment_type ?? '08:00';
+        $this->newPaymentTime = $loan->payment_time ?? '08:00';
         $this->showRescheduleModal = true;
     }
 
@@ -100,7 +79,7 @@ class CollectList extends Component
     {
         $loan = Loan::find($this->selectedLoanId);
         $loan->payment_reschedule_for = ucwords($this->newPaymentDay);
-        $loan->payment_type = $this->newPaymentTime;
+        $loan->payment_time = $this->newPaymentTime;
         $loan->save();
 
         $this->showRescheduleModal = false;
@@ -172,6 +151,9 @@ class CollectList extends Component
             $loan->status = 'finalizado';
         }
 
+        if(!is_null($loan->payment_reschedule_for)){
+            $loan->payment_reschedule_for = null;
+        }
         $loan->save();
 
         // 5. Resetar estado y re-cargar lista

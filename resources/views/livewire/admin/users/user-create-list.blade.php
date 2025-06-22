@@ -36,8 +36,7 @@
                 <th class="p-2">Teléfono</th>
                 <th class="p-2">Dirección</th>
                 <th class="p-2">Dirección de Cobro</th>
-                <th class="p-2">Dirección de Cobro</th>
-
+                <th class="p-2">Imagenes</th>
                 <th class="p-2">Acciones</th>
             </tr>
         </thead>

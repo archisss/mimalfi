@@ -20,7 +20,9 @@ class ExpenseList extends Component
     public $description;
     public $amount;
     public $picture;
-    public $bank, $bank2;
+    public $type;
+    
+    public $bank = 0, $bank2=0, $total_in_Loans = 0;
 
     public function mount()
     {
@@ -32,9 +34,8 @@ class ExpenseList extends Component
     {
         $this->expenses = Expense::whereDate('expense_date', $this->selectedDate)->get();
         $this->bank = Expense::whereDate('expense_date', $this->selectedDate)->sum('amount');
-        $this->bank2 = Payment::whereDate('payment_due', $this->selectedDate)
-        ->where('collector', Auth::id())
-        ->sum('amount');
+        $this->bank2 = Payment::whereDate('payment_due', $this->selectedDate)->where('collector', Auth::id())->sum('amount');
+        $this->total_in_Loans = Expense::whereDate('expense_date', $this->selectedDate)->where('type', 'Loan')->where('user_id', Auth::id())->sum('amount');
     }
 
     public function updatedSelectedDate()
@@ -45,6 +46,7 @@ class ExpenseList extends Component
     public function saveExpense()
     {
         $this->validate([
+            'type' => 'nullable',
             'description' => 'required|string|max:255',
             'amount' => 'required|numeric|min:0',
             'picture' => 'nullable|image|max:1024',
@@ -65,6 +67,7 @@ class ExpenseList extends Component
 
         Expense::create([
             'user_id'     => Auth::id(),
+            'type'        => 'Expense',
             'description' => $this->description,
             'amount'      => $this->amount,
             'picture'     => $path,

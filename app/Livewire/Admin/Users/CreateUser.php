@@ -34,7 +34,7 @@ class CreateUser extends Component
             'password' => 'required|min:6',
             'user_type' => 'required|in:1,2',
             'address' => 'nullable|string|max:255',
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|string|max:14',
             'client_reference' => 'required_if:user_type,2|string|nullable',
             'work_address' => 'required_if:user_type,2|string|nullable',
             'payment_address' => 'required_if:user_type,2|string|nullable',
@@ -68,7 +68,7 @@ class CreateUser extends Component
         $user = User::create([
             'name' => $this->name,
             'email' => $this->email,
-            'password' => bcrypt($this->password),
+            'password' => bcrypt(1234567890), //bcrypt($this->password),
             'user_type' => $this->user_type,
         ]);
 

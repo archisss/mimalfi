@@ -19,7 +19,7 @@
         <thead>
             <tr>
                 <th class="p-2">Cliente</th>
-                <th class="p-2">Total</th>
+                <th class="p-2">Total Prestado</th>
                 <th class="p-2">Pago requerido</th>
                 <th class="p-2">Deuda al Dia</th>
                 <th class="p-2">Pagos realizados</th>
@@ -46,16 +46,16 @@
                     <td class="p-2">$ {{ number_format($deudaaldia, 2) }} </td>
                     <td class="p-2"> {{ $pagosRealizados .' / '.$pagosTotales }} </td>
                     <td class="p-2">{{ $loan->payment_date }}</td>
-                    <td class="p-2">{{ \Carbon\Carbon::parse($loan->payment_type)->format('H:i') }}</td>
+                    <td class="p-2">{{ \Carbon\Carbon::parse($loan->payment_time)->format('H:i') }}</td>
                     <td class="p-2">{{ $loan->payment_reschedule_for ?? 'N/A' }}</td>
                     <!-- <td class="p-2 space-x-2">
                         <button wire:click="$emit('openModal', 'admin.collect.reschedule-loan', {{ json_encode(['loanId' => $loan->id]) }})" class="text-blue-500 hover:underline">Mover</button>
                         <button wire:click="$emit('openModal', 'admin.collect.pay-loan', {{ json_encode(['loanId' => $loan->id]) }})" class="text-green-500 hover:underline">Pagar</button>
                     </td> -->
                     <td class="p-2 space-x-2">
-    <flux:button wire:click="openRescheduleModal({{ $loan->id }})" icon="calendar" tooltip="Mover" />
-    <flux:button wire:click="confirmFinalize({{ $loan->id }})" icon="currency-dollar" tooltip="Pagar" />
-</td>
+                        <flux:button wire:click="openRescheduleModal({{ $loan->id }})" icon="calendar" tooltip="Mover" />
+                        <flux:button wire:click="confirmFinalize({{ $loan->id }})" icon="currency-dollar" tooltip="Pagar" />
+                    </td>
                 </tr>
             @empty
                 <tr>
@@ -64,28 +64,6 @@
             @endforelse
         </tbody>
     </table>
-
-    <!-- <flux:modal wire:model.self="showRescheduleModal" class="min-w-[22rem]">
-    <div class="space-y-6">
-        <div>
-            <flux:heading size="lg">Reprogramar Pago</flux:heading>
-            <flux:select wire:model="newPaymentDay" label="Nuevo día de pago">
-                <option value="">Seleccione un día</option>
-                <option value="lunes">Lunes</option>
-                <option value="martes">Martes</option>
-                <option value="miércoles">Miércoles</option>
-                <option value="jueves">Jueves</option>
-                <option value="viernes">Viernes</option>
-            </flux:select>
-        </div>
-        <div class="flex gap-2 justify-end">
-            <flux:modal.close>
-                <flux:button variant="ghost">Cancelar</flux:button>
-            </flux:modal.close>
-            <flux:button wire:click="reschedulePayment" variant="primary">Guardar</flux:button>
-        </div>
-    </div>
-</flux:modal> -->
 
     <flux:modal wire:model.self="showRescheduleModal" class="min-w-[22rem]">
         <div class="space-y-6">

@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('loans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // cliente
-            $table->date('alias');
+            $table->string('alias');
             $table->bigInteger('amount');
-            $table->string('loan_type');
+            //$table->string('loan_type');
             $table->string('payment_date'); // Ej: Lunes, Martes
+            $table->string('payment_time'); // Ej. Efectivo, Digital
             $table->time('payment_type')->default('08:00');
             $table->date('term');
             $table->string('status')->default('activo');

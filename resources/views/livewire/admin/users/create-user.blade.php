@@ -12,6 +12,9 @@
             <flux:input wire:model="name" label="Nombre" />
 
             <!-- Email -->
+            <flux:input wire:model="phone" label="Celular" mask="(999) 999-9999" />
+
+            <!-- Email -->
             <flux:input wire:model="email" label="Correo Electrónico" type="email" />
 
             <!-- Contraseña -->

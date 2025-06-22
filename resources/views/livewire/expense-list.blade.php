@@ -7,14 +7,20 @@
             {{ session('success') }}
         </div>
     @endif
+    <div class="flex gap-8">
+        <flux:badge variant="pill" icon="user" color="zinc" size="lg">
+            total {{ $bank2 - $bank - $total_in_Loans }}
+        </flux:badge>
+    </div>
 <div class="flex gap-8 items-end">
-    <flux:badge class="mb-4" size="lg" color="red">Gastos del Dia: $ {{ number_format($bank, 2) }}</flux:badge>
     <flux:badge class="mb-4" size="lg" color="green">Cobros del Dia: $ {{ number_format($bank2, 2) }}</flux:badge>
+
+    <flux:badge class="mb-4" size="lg" color="red">Gastos del Dia: $ {{ number_format($bank, 2) }}</flux:badge>
+    
+    <flux:badge class="mb-4" size="lg" color="yellow">Prestamos del Dia: $ {{ number_format($total_in_Loans, 2) }}</flux:badge>
     <!-- Selección de fecha -->
     <div class="mb-4">
-        <!-- <label for="selectedDate" class="block text-sm font-medium text-gray-700">Seleccionar Fecha:</label> -->
         <flux:input type="date" wire:model.live="selectedDate" label="Seleccionar Fecha:" />
-        <!-- <input type="date" id="selectedDate" wire:model.live="selectedDate" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"> -->
     </div>
 </div>
     <!-- Lista de gastos -->
@@ -86,7 +92,7 @@
                 @error('picture') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
 
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Guardar Gasto</button>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Registrar Gasto</button>
         </form>
     </div>
 </div>

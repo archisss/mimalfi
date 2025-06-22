@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('type')->default('Expense');
             $table->string('description');
             $table->bigInteger('amount');
             $table->string('picture')->nullable();

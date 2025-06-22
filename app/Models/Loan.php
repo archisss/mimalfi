@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Loan extends Model
 {
     protected $fillable = [
+        'alias',
         'amount',
         'interest',
         'total_to_pay',
-        'loan_type',
         'payment_date',
+        'payment_type',
+        'payment_time',
         'use_lender',
         'term',
         'collector',

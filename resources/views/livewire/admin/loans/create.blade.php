@@ -9,9 +9,10 @@
             </div>
         @endif
 
-        <input wire:model="user_id" type="text" />
-
         <form wire:submit.prevent="save" class="grid gap-4 max-w-2xl">
+            <!-- Alias -->
+            <flux:input wire:model="user_id" label="User Id" disabled />
+
             <!-- Cliente -->
             <flux:select wire:model="user_id" placeholder="Seleccione" label="Nombre Cliente">
                 @foreach($clients as $client)
@@ -57,7 +58,7 @@
             <div class="mb-4">
                 <label class="block text-sm font-medium mb-2">Día de pago</label>
                 <div class="flex space-x-4">
-                    @foreach(['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'] as $dia)
+                    @foreach(['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'] as $dia)
                         <label class="inline-flex items-center">
                             <input type="radio" wire:model="payment_date" value="{{ $dia }}" class="form-radio h-5 w-5 text-blue-600">
                             <span class="ml-4" style="margin-left:10px; margin-right: 20px;">{{ $dia }}</span>
@@ -85,7 +86,7 @@
             <x-input label="Fecha de vencimiento" wire:model="term" type="date" />
 
             <!-- Cobrador -->
-            <flux:select wire:model="collector" placeholder="Asigne al Cobrador" label="Cobrador">
+            <flux:select wire:model.live="collector" placeholder="Asigne al Cobrador" label="Cobrador">
                 @foreach($collectors as $collector)
                     <flux:select.option wire:key="collector-{{ $collector->id }}" value="{{ $collector->id }}">
                         {{ $collector->name }}
@@ -95,10 +96,16 @@
 
             <!-- Usa banco -->
             <flux:field variant="inline">
-                <flux:checkbox wire:model="use_bank" />
+                <flux:checkbox wire:model.live="use_bank" :disabled="$disable_bank"/>
                 <flux:label>¿Usa efectivo de Cobradores?</flux:label>
                 <flux:error name="use_bank" />
             </flux:field>
+            @if (session()->has('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+            <div type="danger" message="{{ session('error') }}" ></div>
 
             <!-- Prestamista -->
             <x-input label="ID del Prestamista (opcional)" wire:model="use_lender" type="number" />
@@ -108,5 +115,15 @@
                 <x-button type="submit" variant="primary">Guardar</x-button>
             </div>
         </form>
+        @if ($errors->any())
+    <div class="bg-red-100 text-red-800 p-2 mb-4 rounded">
+        <ul class="list-disc pl-5">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
     </div>
 </div>
