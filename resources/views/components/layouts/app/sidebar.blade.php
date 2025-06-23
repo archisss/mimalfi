@@ -12,7 +12,7 @@
             </a>
 
             <flux:navlist variant="outline">
-                <flux:navlist.group :heading="__('Platform')" class="grid">
+                <flux:navlist.group :heading="__('Administrador')" class="grid">
                     <flux:navlist.item icon="table-cells" :href="route('admin.dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Dashboard') }}</flux:navlist.item>
 
@@ -20,8 +20,6 @@
                     {{ __('Tipo de Prestamo') }}</flux:navlist.item>
                     <flux:navlist.item :href="route('admin.loantypes.create')" :current="request()->routeIs('Tipo de Prestamo')" wire:navigate style="margin-left: 28px">
                     {{ __('Nuevo') }}</flux:navlist.item>
-                    <!-- <flux:navlist.item :href="route('admin.loantypes.loantypeslist')" :current="request()->routeIs('Tipo de Prestamo')" wire:navigate style="margin-left: 28px">
-                    {{ __('Listado') }}</flux:navlist.item> -->
 
                     <flux:navlist.item icon="banknotes" :href="route('admin.loans')" :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Prestamos') }}</flux:navlist.item>
@@ -34,20 +32,15 @@
                     {{ __('Usuarios') }}</flux:navlist.item>
                     <flux:navlist.item :href="route('admin.users.user.create.list')" :current="request()->routeIs('Usuarios')" wire:navigate style="margin-left: 28px">
                     {{ __('Listado') }}</flux:navlist.item>
-                    
+                </flux:navlist.group>
+
+                <flux:navlist.group :heading="__('Cobrador')" class="grid">                    
                     <flux:navlist.item icon="banknotes" :href="route('admin.collect')" :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Cobrar') }}</flux:navlist.item>
                     
                     <flux:navlist.item icon="bookmark-square" :href="route('expenses.list')" :current="request()->routeIs('dashboard')" wire:navigate>
-                    {{ __('Gastos') }}</flux:navlist.item>
-                    
+                    {{ __('Gastos') }}</flux:navlist.item>                 
                 </flux:navlist.group>
-
-                <!-- opcion a validar par alos menis internos --
-                 <ul x-show="open" class="ml-4">
-        <li><a href="{{ route('admin.loans') }}" class="block py-1 px-2 hover:underline">Crear</a></li>
-        <li><a href="{{ route('admin.loans') }}" class="block py-1 px-2 hover:underline">Lista</a></li>
-    </ul> -->
             </flux:navlist>
 
             <flux:spacer />
