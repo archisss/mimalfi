@@ -18,8 +18,8 @@ return new class extends Migration
             $table->bigInteger('amount');
             //$table->string('loan_type');
             $table->string('payment_date'); // Ej: Lunes, Martes
-            $table->string('payment_time'); // Ej. Efectivo, Digital
-            $table->time('payment_type')->default('08:00');
+            $table->string('payment_type'); // Ej. Efectivo, Digital
+            $table->time('payment_time')->default('08:00');
             $table->date('term');
             $table->string('status')->default('activo');
             $table->boolean('use_bank')->default(false);
