@@ -11,5 +11,6 @@ class LoanType extends Model
         'calendar_days',
         'payments_total',
         'porcentage',
+        'late_payment_porcentage',
     ];
 }

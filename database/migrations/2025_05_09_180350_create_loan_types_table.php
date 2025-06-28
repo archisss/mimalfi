@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('calendar_days'); // días calendario entre pagos
             $table->integer('payments_total'); // total de pagos
             $table->decimal('porcentage', 5, 2); // porcentaje de interés
+            $table->decimal('late_payment_porcentage', 5, 2)->default(0); // porcentaje de interés de pago retrasado
             $table->timestamps();
         });
     }

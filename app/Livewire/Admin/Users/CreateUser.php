@@ -65,9 +65,12 @@ class CreateUser extends Component
     {
         $this->validate();
 
+        $cleanPhone = preg_replace('/\D/', '', $this->phone);
+
         $user = User::create([
             'name' => $this->name,
             'email' => $this->email,
+            'cellphone' => $cleanPhone,
             'password' => bcrypt(1234567890), //bcrypt($this->password),
             'user_type' => $this->user_type,
         ]);
@@ -76,7 +79,6 @@ class CreateUser extends Component
             $userDetail = UserDetail::create([
                 'user_id' => $user->id,
                 'address' => $this->address,
-                'phone' => $this->phone,
                 'client_reference' => $this->client_reference,
                 'work_address' => $this->work_address,
                 'payment_address' => $this->payment_address,
