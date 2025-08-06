@@ -11,11 +11,36 @@ use App\Livewire\Admin\Users\CreateUser;
 use App\Livewire\Admin\Users\EditUser;
 use App\Livewire\Admin\Users\UserCreateList;
 use App\Livewire\Admin\Collect\CollectList;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
 
 if (env('APP_ENV') === 'production') {
     URL::forceScheme('https');
 }
+
+Route::get('/enviawpp', function () {
+    $token = 'EAASVVbJ8DL8BPMDHaW5DTHyoZBV8ZCMGZBc7YFWsADntJplLH6ZABEC9SCmYeGXuj9ZBMOExCV0gHhvSulOQWlaLF4uXV2PV8x3DmSkCRpiOvXaQZCZCQ9NdRVZAzuZBserYaPUDBOT0qHXIYS2pyJwP1TTN0YYSLbJmp2SJoqxMpfFkouejZCnaXnLyTe6G7oshmWZAjn5siXrnh4dFZBP27CypEwEcC2K5IzacaZAPwZB2WHiluz0wZDZD';
+
+    $telefono = '523122133120';
+
+    $response = Http::withToken($token)->post('https://graph.facebook.com/v22.0/624771680729325/messages', [
+        'messaging_product' => 'whatsapp',
+        'to' => $telefono,
+        'type' => 'template',
+        'template' => [
+            'name' => 'hello_world',
+            'language' => [
+                'code' => 'en_US',
+            ],
+        ],
+    ]);
+
+    return response()->json([
+        'status' => $response->status(),
+        'body' => $response->json(),
+    ]);
+});
+
 
 Route::get('/', function () {
     return view('welcome');

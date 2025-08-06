@@ -16,7 +16,9 @@
             <flux:select.option value="2">Cliente</flux:select.option>
         </flux:select>
 
-        <flux:input label="Teléfono" mask="9999999999" wire:model="cellphone" />
+        <flux:input label="Celular" mask="9999999999" wire:model="cellphone" />
+
+        <flux:input label="Teléfono" mask="9999999999" wire:model="phone" />
 
         <flux:input label="Dirección de Trabajo" wire:model="work_address" />
         <flux:input label="Dirección de Cobro" wire:model="payment_address" />

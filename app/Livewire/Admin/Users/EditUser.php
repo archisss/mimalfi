@@ -13,6 +13,7 @@ class EditUser extends Component
     public $email;
     public $user_type;
     public $cellphone;
+    public $phone;
     public $work_address;
     public $payment_address;
 
@@ -25,6 +26,7 @@ class EditUser extends Component
         $this->email = $user->email;
         $this->user_type = $user->user_type;
         $this->cellphone = $user->cellphone;
+        $this->phone = $user->phone;
         $this->work_address = optional($user->userDetail)->work_address;
         $this->payment_address = optional($user->userDetail)->payment_address;
     }
@@ -36,6 +38,7 @@ class EditUser extends Component
             'email' => 'required|email',
             'user_type' => 'required|in:1,2',
             'cellphone' => 'nullable|string',
+            'phone' => 'nullable|string',
             'work_address' => 'nullable|string',
             'payment_address' => 'nullable|string',
         ]);
@@ -46,6 +49,7 @@ class EditUser extends Component
             'email' => $this->email,
             'user_type' => $this->user_type,
             'cellphone' => $this->cellphone,
+            'phone' => $this->phone,
         ]);
 
         $user->userDetail()->updateOrCreate(

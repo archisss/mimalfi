@@ -8,6 +8,7 @@ class UserDetail extends Model
 {
     protected $fillable = [
         'user_id',
+        'phone',
         'client_reference',
         'work_address',
         'payment_address',

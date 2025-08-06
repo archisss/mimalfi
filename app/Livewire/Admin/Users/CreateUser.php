@@ -18,6 +18,7 @@ class CreateUser extends Component
     public $user_type = '';
     public $address;
     public $phone;
+    public $cellphone;
     public $client_reference;
     public $work_address;
     public $payment_address;
@@ -34,6 +35,7 @@ class CreateUser extends Component
             'password' => 'required|min:6',
             'user_type' => 'required|in:1,2',
             'address' => 'nullable|string|max:255',
+            'cellphone' => 'nullable|string|max:14',
             'phone' => 'nullable|string|max:14',
             'client_reference' => 'required_if:user_type,2|string|nullable',
             'work_address' => 'required_if:user_type,2|string|nullable',
@@ -61,16 +63,18 @@ class CreateUser extends Component
         }
     }
 
+    public function cleanPhone($phone){
+        return preg_replace('/\D/', '', $phone);
+    }
+
     public function save()
     {
         $this->validate();
 
-        $cleanPhone = preg_replace('/\D/', '', $this->phone);
-
         $user = User::create([
             'name' => $this->name,
             'email' => $this->email,
-            'cellphone' => $cleanPhone,
+            'cellphone' => $this->cleanPhone($this->cellphone),
             'password' => bcrypt(1234567890), //bcrypt($this->password),
             'user_type' => $this->user_type,
         ]);
@@ -78,6 +82,7 @@ class CreateUser extends Component
         if ($this->user_type == 2) {
             $userDetail = UserDetail::create([
                 'user_id' => $user->id,
+                'phone' => $this->cleanPhone($this->phone),
                 'address' => $this->address,
                 'client_reference' => $this->client_reference,
                 'work_address' => $this->work_address,

@@ -8,6 +8,9 @@ use App\Models\Loan;
 use App\Models\Payment;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use App\Services\WhatsappService;
+use PhpParser\Lexer\TokenEmulator\AsymmetricVisibilityTokenEmulator;
+
 
 class CollectList extends Component
 {
@@ -112,7 +115,7 @@ class CollectList extends Component
         }
     }
 
-    public function finalizeLoan()
+    public function finalizeLoan(WhatsappService $whatsapp)
     {
         $loan = Loan::with('loanType', 'payments')->findOrFail($this->selectedLoan);
 
@@ -129,6 +132,10 @@ class CollectList extends Component
         // 2. Cuántas cuotas enteras cubre el monto ingresado
         $numPayments = floor($this->amount / $installment);
 
+        // 2.1 tenemos excedente pero no completa un pago
+        $excedente = $this->amount-($installment*$numPayments);
+        
+//dd('pagos ->' . $numPayments .'installment->' . $installment.'restante->'.($this->amount-($installment*$numPayments)));
         if ($numPayments < 1) {
             $this->addError('amount', 'El monto no alcanza para cubrir ni una cuota completa.');
             return;
@@ -140,14 +147,16 @@ class CollectList extends Component
                 'loan_id' => $loan->id,
                 'payment_due' => now(),
                 'collector' => Auth::id(),
-                'amount' => $installment,
+                'amount' => $excedente>0 ? $installment+$excedente : $installment,
                 'pay_full' => $this->payFull ? 1 : 0,
                 'payment_date' => now(),
             ]);
+            $excedente = 0;
         }
-
+        
         // 4. Si el monto cubre todas las cuotas, marcar préstamo como finalizado
-        if ($numPayments >= $paymentsTotal) {
+        $alreadyPay = Payment::where('loan_id', $this->selectedLoan)->sum('amount');
+        if ($numPayments >= $paymentsTotal || $alreadyPay >= $totalToPay) {
             $loan->status = 'finalizado';
         }
 
@@ -155,6 +164,48 @@ class CollectList extends Component
             $loan->payment_reschedule_for = null;
         }
         $loan->save();
+
+        $pagos_realizados_al_dia = Payment::where('loan_id', $this->selectedLoan)->count();
+
+        //Enviar WhatsApp al cliente
+        $cellphone = preg_replace('/\D/', '', $loan->user->cellphone); // limpiar número
+        if ($cellphone) {
+            $components = [[
+                'type' => 'body',
+                'parameters' => [
+                    [
+                    'type'           => 'text',
+                    'parameter_name' => 'client',
+                    'text'           => $loan->user->name,
+                    ],
+                    [
+                    'type'           => 'text',
+                    'parameter_name' => 'num_abono',
+                    'text'           => "{$pagos_realizados_al_dia}/{$paymentsTotal}",
+                    ],
+                    [
+                    'type'           => 'text',
+                    'parameter_name' => 'cantidad',
+                    'text'           => number_format($this->amount, 2),
+                    ],
+                    [
+                    'type'           => 'text',
+                    'parameter_name' => 'now',
+                    'text'           => now()->format('d/m/Y'),
+                    ],
+                ],
+            ]];
+
+            // $enviado = $whatsapp->sendTemplateMessage(
+            //     '52'.$cellphone,
+            //     'recibo_abono',
+            //     $components
+            // );
+            // if($enviado['status'] == 200){
+            //     //ToDo asve into the DB 
+            // }
+            //dd($components);
+        }
 
         // 5. Resetar estado y re-cargar lista
         $this->reset(['showFinalizeModal', 'selectedLoan', 'payFull', 'amount']);

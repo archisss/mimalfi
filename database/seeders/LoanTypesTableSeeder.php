@@ -22,6 +22,7 @@ class LoanTypesTableSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
+            
             LoanType::updateOrCreate([
                 'name' => 'Semana15',
                 'calendar_days' => 7,
@@ -30,6 +31,7 @@ class LoanTypesTableSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
+
             LoanType::updateOrCreate([
                 'name' => 'Mensual10',
                 'calendar_days' => 30,
