@@ -5,7 +5,10 @@
         <thead>
             <tr>
                 <th class="p-2">Nombre</th>
-                <th class="p-2">Cantidad en Caja del Día</th>
+                <th class="p-2">Cobros del Día</th>
+                <th class="p-2">Gastos del Día</th>
+                <th class="p-2">Préstamos del Día</th>
+                <th class="p-2">Caja del Día</th>
                 <th class="p-2">Acciones</th>
             </tr>
         </thead>
@@ -13,7 +16,10 @@
             @foreach($collectors as $collector)
                 <tr class="border-b">
                     <td class="p-2">{{ $collector->name }}</td>
-                    <td class="p-2">${{ number_format($this->calculateCobrosDelDia($collector->id), 2) }}</td>
+                    <td class="p-2 text-green-600">${{ number_format($collector->payments_today, 2) }}</td>
+                    <td class="p-2 text-red-600">${{ number_format($collector->expenses_today, 2) }}</td>
+                    <td class="p-2 text-yellow-600">${{ number_format($collector->loans_today, 2) }}</td>
+                    <td class="p-2">${{ number_format($collector->self_bank_today, 2) }}</td>
                     <td class="p-2 space-x-2">
                         <flux:button wire:click="openCajaModal({{ $collector->id }})" icon="wallet" tooltip="Caja" />
                         <flux:button wire:click="openChangeRouteModal({{ $collector->id }})" icon="arrows-right-left" tooltip="Cambiar Ruta" />
@@ -23,6 +29,7 @@
         </tbody>
     </table>
 
+
     <!-- Modal para Caja -->
     <flux:modal wire:model.self="showCajaModal" class="min-w-[22rem]">
         <div class="space-y-6">
@@ -31,7 +38,7 @@
             @error('amountToCaja') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
 
             <div class="flex justify-end mt-4 gap-2">
-                <flux:modal.close><flux:button variant="ghost">Cancelar</flux:button></flux:modal.close>
+                <flux:button variant="ghost" wire:click="closeCajaModal">Cancelar</flux:button>
                 <flux:button wire:click="leaveInCaja" variant="primary">Guardar</flux:button>
             </div>
         </div>
@@ -51,7 +58,7 @@
             @error('newCollectorId') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
 
             <div class="flex justify-end mt-4 gap-2">
-                <flux:modal.close><flux:button variant="ghost">Cancelar</flux:button></flux:modal.close>
+                 <flux:button variant="ghost" wire:click="closeCajaModal">Cancelar</flux:button>
                 <flux:button wire:click="changeRouteTo" variant="primary">Actualizar</flux:button>
             </div>
         </div>
