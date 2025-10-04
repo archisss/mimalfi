@@ -32,6 +32,11 @@
                     {{ __('Usuarios') }}</flux:navlist.item>
                     <flux:navlist.item :href="route('admin.users.user.create.list')" :current="request()->routeIs('Usuarios')" wire:navigate style="margin-left: 28px">
                     {{ __('Listado') }}</flux:navlist.item>
+
+                    <flux:navlist.item icon="truck" :href="route('admin.collectors')" :current="request()->routeIs('dashboard')" wire:navigate>
+                    {{ __('Cobradores') }}</flux:navlist.item>
+                    <flux:navlist.item :href="route('admin.collectors')" :current="request()->routeIs('Usuarios')" wire:navigate style="margin-left: 28px">
+                    {{ __('Listado') }}</flux:navlist.item>
                 </flux:navlist.group>
 
                 <flux:navlist.group :heading="__('Cobrador')" class="grid">                    

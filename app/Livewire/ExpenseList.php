@@ -7,6 +7,7 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Expense;
 use App\Models\Payment;
+use App\Models\SelfBank;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -22,7 +23,7 @@ class ExpenseList extends Component
     public $picture;
     public $type;
     
-    public $bank = 0, $bank2=0, $total_in_Loans = 0;
+    public $bank = 0, $bank2=0, $selfbank =0, $total_in_Loans = 0;
 
     public function mount()
     {
@@ -34,6 +35,7 @@ class ExpenseList extends Component
     {
         $this->expenses = Expense::whereDate('expense_date', $this->selectedDate)->get();
         $this->bank = Expense::whereDate('expense_date', $this->selectedDate)->sum('amount');
+        $this->selfbank = SelfBank::whereDate('bank_date', $this->selectedDate)->sum('amount');
         $this->bank2 = Payment::whereDate('payment_due', $this->selectedDate)->where('collector', Auth::id())->sum('amount');
         $this->total_in_Loans = Expense::whereDate('expense_date', $this->selectedDate)->where('type', 'Loan')->where('user_id', Auth::id())->sum('amount');
     }

@@ -11,6 +11,7 @@ use App\Livewire\Admin\Users\CreateUser;
 use App\Livewire\Admin\Users\EditUser;
 use App\Livewire\Admin\Users\UserCreateList;
 use App\Livewire\Admin\Collect\CollectList;
+use App\Livewire\Admin\Collectors\CollectorList;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
 
@@ -79,6 +80,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/users/edit/{user_id}', EditUser::class)->name('admin.users.edit');
     Route::get('/admin/collect', CollectList::class)->name('admin.collect');
     Route::get('/expenses', ExpenseList::class)->name('expenses.list');
+    Route::get('/admin/collectors', CollectorList::class)->name('admin.collectors');
 //  Route::get('/cobrador/dashboard', \App\Livewire\Cobrador\Dashboard::class)
 //  ->name('cobrador.dashboard')
 // ->middleware('cobrador');

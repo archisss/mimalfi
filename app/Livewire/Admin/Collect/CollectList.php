@@ -60,11 +60,11 @@ class CollectList extends Component
             $pagosTotales = $loan->loanType->payments_total ?? 1;
             $pagoMensual = $loan->total_to_pay / $pagosTotales;
             $pagosRealizados = floor($totalAbonado / $pagoMensual);
-            $deudaAlDia = $loan->total_to_pay - ($pagosRealizados * $pagoMensual);
+            $deudaaldia = $loan->total_to_pay - ($pagosRealizados * $pagoMensual);
 
             $loan->pagos_realizados = $pagosRealizados;
             $loan->pago_mensual = $pagoMensual;
-            $loan->deuda_al_dia = $deudaAlDia;
+            $loan->deuda_al_dia = $deudaaldia;
             return $loan;
         });
     }
@@ -89,7 +89,7 @@ class CollectList extends Component
         $this->fetchLoans(); // Actualiza la lista después del cambio
     }
 
-    public function confirmFinalize($loanId)
+    public function confirmFinalize($loanId) //ventana de cobranza
     {
         
         $loan = Loan::with('loanType', 'payments')->findOrFail($loanId);
@@ -135,7 +135,7 @@ class CollectList extends Component
         // 2.1 tenemos excedente pero no completa un pago
         $excedente = $this->amount-($installment*$numPayments);
         
-//dd('pagos ->' . $numPayments .'installment->' . $installment.'restante->'.($this->amount-($installment*$numPayments)));
+        //dd('pagos ->' . $numPayments .'installment->' . $installment.'restante->'.($this->amount-($installment*$numPayments)));
         if ($numPayments < 1) {
             $this->addError('amount', 'El monto no alcanza para cubrir ni una cuota completa.');
             return;
