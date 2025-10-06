@@ -32,7 +32,7 @@ class CreateUser extends Component
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6',
+            'password' => 'required|min:4',
             'user_type' => 'required|in:1,2',
             'address' => 'nullable|string|max:255',
             'cellphone' => 'nullable|string|max:14',

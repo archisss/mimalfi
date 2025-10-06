@@ -14,7 +14,7 @@
             <!-- Email -->
             <flux:input wire:model="cellphone" label="Celular" mask="(999) 999-9999" />
 
-            @if($user_type == 2)
+            @if($this->user_type == 2)
                 <!-- Telefono -->
                 <flux:input wire:model="phone" label="Telefono" mask="(999) 999-9999" />
             @endif
