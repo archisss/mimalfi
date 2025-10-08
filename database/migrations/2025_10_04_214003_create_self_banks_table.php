@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('type')->default('Inicial Bank');
             $table->string('description');
             $table->bigInteger('amount');
-            $table->date('bank_date')->default(now());
+            $table->date('bank_date');
             $table->timestamps();
         });
     }

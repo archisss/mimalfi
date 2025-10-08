@@ -28,12 +28,19 @@ class CollectList extends Component
     public $deudaaldia = 0;
     public $newPaymentTime = '08:00';
     public $search = '';
+    public $selectedDay;
 
     public function mount()
     {
         $this->today = Carbon::now();
-        $this->dayName = 'jueves';//$this->today->locale('es')->dayName;
+        $this->dayName = ucfirst($this->today->locale('es')->dayName); //jueves
+        $this->selectedDay = $this->dayName;
+        $this->fetchLoans();
+    }
 
+    public function updatedSelectedDay()
+    {
+        $this->selectedDay = ucfirst($this->selectedDay);
         $this->fetchLoans();
     }
 
@@ -42,8 +49,8 @@ class CollectList extends Component
         $query = Loan::with(['user', 'loanType', 'payments'])
         ->where('status', '!=', 'finalizado')
         ->where(function ($q) {
-            $q->where('payment_date', $this->dayName)
-              ->orWhere('payment_reschedule_for', $this->dayName);
+            $q->where('payment_date', $this->selectedDay)
+              ->orWhere('payment_reschedule_for', $this->selectedDay);
         });
 
     if ($this->search) {

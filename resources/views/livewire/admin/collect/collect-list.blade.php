@@ -1,5 +1,19 @@
 <div class="p-6">
-    <h2 class="text-2xl font-bold mb-4">Préstamos para {{ ucfirst($dayName) }}</h2>
+    <h2 class="text-2xl font-bold mb-4">Préstamos para 
+        @if(Auth::user()->tipo_usuario == 0)     
+            <select wire:model.live="selectedDay" id="selectedDay" style="background-color: gray;">
+                <option style="background-color: gray-200;" value="Lunes" {{ $selectedDay == "Lunes" ? 'Selected' : '' }}>Lunes</option>
+                <option value="Martes" {{ $selectedDay == "Martes" ? 'Selected' : '' }}>Martes</option>
+                <option value="Miércoles" {{ $selectedDay == "Miércoles" ? 'Selected' : '' }}>Miércoles</option>
+                <option value="Jueves" {{ $selectedDay == "Jueves" ? 'Selected' : '' }}>Jueves</option>
+                <option value="Viernes" {{ $selectedDay == "Viernes" ? 'Selected' : '' }}>Viernes</option>
+                <option value="Sábado" {{ $selectedDay == "Sábado" ? 'Selected' : '' }}>Sábado</option>
+                <option value="Domingo" {{ $selectedDay == "Domingo" ? 'Selected' : '' }}>Domingo</option>
+            </select>
+        @else
+            {{ ucfirst($selectedDay) }}
+        @endif 
+    </h2>
 
     <!-- search -->
     <div class="mb-4">

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->date('payment_date');
             $table->date('payment_due');
             $table->unsignedBigInteger('collector')->nullable(); // Puede ser nulo
-            $table->bigInteger('amount');
+            $table->float('amount');
             $table->boolean('pay_full')->default(false);
             $table->timestamps();
         });

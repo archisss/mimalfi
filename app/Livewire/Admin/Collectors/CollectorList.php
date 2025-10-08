@@ -18,11 +18,9 @@ class CollectorList extends Component
     public $showCajaModal = false;
     public $showChangeRouteModal = false;
     public $newCollectorId;
-
     public $selectedCollectorId;
     public $cajaDelDia = 0;
     public $amountToCaja;
-
     public $collectorOptions = []; // para “cambiar ruta”
 
     public function mount()
@@ -71,17 +69,6 @@ class CollectorList extends Component
     {        
         $selfBank = SelfBank::where('user_id' , $collectorId)->sum('amount');
         return $selfBank;
-        
-        // = Loan::where('loans.collector', $collectorId)
-        //     ->join('payments', 'loans.id', '=', 'payments.loan_id')
-        //     ->whereDate('payments.payment_date', now())
-        //     ->sum('payments.amount');
-        
-        // $totalExpenses = Expense::where('user_id', $collectorId)
-        //     ->whereDate('expense_date', now())
-        //     ->sum('amount');
-
-        // return ($totalPayments ?? 0) - ($totalExpenses ?? 0);
     }
 
     public function leaveInCaja()
@@ -94,7 +81,7 @@ class CollectorList extends Component
             'user_id' => $this->selectedCollectorId,
             'description' => 'Inicio Caja ' . now()->format('d/m/Y') . ' de ' . $this->amountToCaja . ' pesos',
             'amount' => $this->amountToCaja,
-            'bank_date' => now()
+            'bank_date' => Carbon::now()
         ]);
 
         $this->closeCajaModal();

@@ -13,7 +13,7 @@ class SelfBank extends Model
         'type',
         'description',
         'amount',
-        'expense_date',
+        'bank_date'
     ];
 
     /**
