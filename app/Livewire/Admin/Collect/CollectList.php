@@ -7,6 +7,7 @@ use Livewire\Component;
 use App\Models\Loan;
 use App\Models\Payment;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\WhatsappService;
 use PhpParser\Lexer\TokenEmulator\AsymmetricVisibilityTokenEmulator;
@@ -34,7 +35,7 @@ class CollectList extends Component
     {
         $this->today = Carbon::now();
         $this->dayName = ucfirst($this->today->locale('es')->dayName); //jueves
-        $this->selectedDay = $this->dayName;
+        $this->selectedDay = ucfirst(request()->query('selectedDay', $this->dayName));
         $this->fetchLoans();
     }
 

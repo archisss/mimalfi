@@ -30,54 +30,55 @@ class LoanList extends Component
 
     public function confirmFinalize($loanId)
     {
-        $loan = Loan::with('loanType', 'payments')->findOrFail($loanId);
+        return redirect()->to('/admin/collect');
+        // $loan = Loan::with('loanType', 'payments')->findOrFail($loanId);
 
-        $pagosRealizados = $loan->payments->count();
-        $pagosTotales = $loan->loanType->payments_total ?? 1;
+        // $pagosRealizados = $loan->payments->count();
+        // $pagosTotales = $loan->loanType->payments_total ?? 1;
 
-        $this->pagomensual = $loan->total_to_pay / $pagosTotales;
-        $this->deudaaldia = $loan->total_to_pay - ($pagosRealizados * $this->pagomensual);
+        // $this->pagomensual = $loan->total_to_pay / $pagosTotales;
+        // $this->deudaaldia = $loan->total_to_pay - ($pagosRealizados * $this->pagomensual);
 
-        $this->selectedLoan = $loanId;
-        $this->payFull = false;
-        $this->amount = round($this->pagomensual, 2); // precargar con pago mensual
-        $this->showFinalizeModal = true;
+        // $this->selectedLoan = $loanId;
+        // $this->payFull = false;
+        // $this->amount = round($this->pagomensual, 2); // precargar con pago mensual
+        // $this->showFinalizeModal = true;
     }
     public function updatedPayFull($value)
     {
-        if ($value) {
-            $this->amount = round($this->deudaaldia, 2);
-        } else {
-            $this->amount = round($this->pagomensual, 2);
-        }
+        // if ($value) {
+        //     $this->amount = round($this->deudaaldia, 2);
+        // } else {
+        //     $this->amount = round($this->pagomensual, 2);
+        // }
     }
 
     public function finalizeLoan()
     {
-        $loan = Loan::findOrFail($this->selectedLoan);
+        // $loan = Loan::findOrFail($this->selectedLoan);
 
-        if ($this->amount <= 0) {
-            $this->addError('amount', 'Debe ingresar un monto válido para pago total.');
-            return;
-        }
+        // if ($this->amount <= 0) {
+        //     $this->addError('amount', 'Debe ingresar un monto válido para pago total.');
+        //     return;
+        // }
 
-        // Crear el pago
-        Payment::create([
-            'loan_id' => $loan->id,
-            'payment_due' => now(),
-            'collector' => Auth::id(),
-            'amount' => $this->amount,
-            'pay_full' => $this->payFull ? 1 : 0,
-            'payment_date' => now(),
-        ]);
+        // // Crear el pago
+        // Payment::create([
+        //     'loan_id' => $loan->id,
+        //     'payment_due' => now(),
+        //     'collector' => Auth::id(),
+        //     'amount' => $this->amount,
+        //     'pay_full' => $this->payFull ? 1 : 0,
+        //     'payment_date' => now(),
+        // ]);
 
-        // Actualizar estado del préstamo
-         $loan->status = $this->payFull == true ? 'finalizado' : 'activo';
-        $loan->save();
-        Flux::toast('Pago registrado con exito');
-        $this->reset(['showFinalizeModal', 'selectedLoan', 'payFull', 'amount']);
-        //$this->fetchLoans();
-        //session()->flash('success', 'Préstamo finalizado y pago registrado.');
+        // // Actualizar estado del préstamo
+        //  $loan->status = $this->payFull == true ? 'finalizado' : 'activo';
+        // $loan->save();
+        // Flux::toast('Pago registrado con exito');
+        // $this->reset(['showFinalizeModal', 'selectedLoan', 'payFull', 'amount']);
+        // //$this->fetchLoans();
+        // //session()->flash('success', 'Préstamo finalizado y pago registrado.');
         
     }
 
